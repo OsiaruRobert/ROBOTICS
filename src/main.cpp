@@ -1,27 +1,34 @@
 #include <Arduino.h>
 
-const int BUTTON = 8;
-const int LED = 2;
+const int LDR_PIN = analogRead(A0);
+const int LED = 8;
 
 void setup()
 {
-  pinMode(BUTTON, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
-  Serial.begin("OSIARU MOTION");
+  Serial.begin(9600);
 }
 
 void loop()
 {
-  bool pressed = (digitalRead(BUTTON) == HIGH);
+  int light = analogRead(LDR_PIN);
 
-  if (pressed)
+  if (light < 300)
   {
     digitalWrite(LED, HIGH);
+    Serial.println("high");
+  }
+  else if (light < 150)
+  {
+    Serial.println("low");
+
+    digitalWrite(LED, LOW);
   }
   else
   {
+    Serial.println("low");
+
     digitalWrite(LED, LOW);
   }
-
-  delay(500);
+  delay(200);
 }
